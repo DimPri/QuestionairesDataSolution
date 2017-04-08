@@ -1,0 +1,228 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="QuestionairesDataModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Questionaire">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Codename" Type="nchar" MaxLength="10" Nullable="false" />
+          <Property Name="Comments" Type="nvarchar" MaxLength="60" />
+        </EntityType>
+        <EntityType Name="Student">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FirstName" Type="nvarchar" MaxLength="20" />
+          <Property Name="LastName" Type="nvarchar" MaxLength="30" />
+          <Property Name="Asma" Type="nchar" MaxLength="10" />
+          <Property Name="Seira" Type="nchar" MaxLength="3" />
+          <Property Name="Tmhma" Type="nchar" MaxLength="2" />
+        </EntityType>
+        <EntityType Name="StudentQuestionaireScore">
+          <Key>
+            <PropertyRef Name="QuestionaireId" />
+            <PropertyRef Name="StudentId" />
+          </Key>
+          <Property Name="QuestionaireId" Type="int" Nullable="false" />
+          <Property Name="StudentId" Type="int" Nullable="false" />
+          <Property Name="IsReExamination" Type="bit" Nullable="false" />
+          <Property Name="ClosedBookScore" Type="int" />
+          <Property Name="OpenBookScore" Type="int" />
+          <Property Name="LimitsScore" Type="nchar" MaxLength="1" />
+          <Property Name="BoldfaceScore" Type="nchar" MaxLength="1" />
+          <Property Name="DateOfScoring" Type="date" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_1_StudentQuestionaireScoresTable_ToQuestionairesTable">
+          <End Role="Questionaire" Type="Self.Questionaire" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="StudentQuestionaireScore" Type="Self.StudentQuestionaireScore" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Questionaire">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="StudentQuestionaireScore">
+              <PropertyRef Name="QuestionaireId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_2_StudentQuestionaireScoresTable_ToStudentsTable">
+          <End Role="Student" Type="Self.Student" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="StudentQuestionaireScore" Type="Self.StudentQuestionaireScore" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Student">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="StudentQuestionaireScore">
+              <PropertyRef Name="StudentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="QuestionairesDataModelStoreContainer">
+          <EntitySet Name="Questionaire" EntityType="Self.Questionaire" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Student" EntityType="Self.Student" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="StudentQuestionaireScore" EntityType="Self.StudentQuestionaireScore" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_1_StudentQuestionaireScoresTable_ToQuestionairesTable" Association="Self.FK_1_StudentQuestionaireScoresTable_ToQuestionairesTable">
+            <End Role="Questionaire" EntitySet="Questionaire" />
+            <End Role="StudentQuestionaireScore" EntitySet="StudentQuestionaireScore" />
+          </AssociationSet>
+          <AssociationSet Name="FK_2_StudentQuestionaireScoresTable_ToStudentsTable" Association="Self.FK_2_StudentQuestionaireScoresTable_ToStudentsTable">
+            <End Role="Student" EntitySet="Student" />
+            <End Role="StudentQuestionaireScore" EntitySet="StudentQuestionaireScore" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="QuestionairesDataModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Questionaire">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Codename" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="Comments" Type="String" MaxLength="60" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="StudentQuestionaireScore" Relationship="Self.FK_1_StudentQuestionaireScoresTable_ToQuestionairesTable" FromRole="Questionaire" ToRole="StudentQuestionaireScore" />
+        </EntityType>
+        <EntityType Name="Student">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FirstName" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="LastName" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="Asma" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="Seira" Type="String" MaxLength="3" FixedLength="true" Unicode="true" />
+          <Property Name="Tmhma" Type="String" MaxLength="2" FixedLength="true" Unicode="true" />
+          <NavigationProperty Name="StudentQuestionaireScore" Relationship="Self.FK_2_StudentQuestionaireScoresTable_ToStudentsTable" FromRole="Student" ToRole="StudentQuestionaireScore" />
+        </EntityType>
+        <EntityType Name="StudentQuestionaireScore">
+          <Key>
+            <PropertyRef Name="QuestionaireId" />
+            <PropertyRef Name="StudentId" />
+          </Key>
+          <Property Name="QuestionaireId" Type="Int32" Nullable="false" />
+          <Property Name="StudentId" Type="Int32" Nullable="false" />
+          <Property Name="IsReExamination" Type="Boolean" Nullable="false" />
+          <Property Name="ClosedBookScore" Type="Int32" />
+          <Property Name="OpenBookScore" Type="Int32" />
+          <Property Name="LimitsScore" Type="String" MaxLength="1" FixedLength="true" Unicode="true" />
+          <Property Name="BoldfaceScore" Type="String" MaxLength="1" FixedLength="true" Unicode="true" />
+          <Property Name="DateOfScoring" Type="DateTime" Nullable="false" Precision="0" />
+          <NavigationProperty Name="Questionaire" Relationship="Self.FK_1_StudentQuestionaireScoresTable_ToQuestionairesTable" FromRole="StudentQuestionaireScore" ToRole="Questionaire" />
+          <NavigationProperty Name="Student" Relationship="Self.FK_2_StudentQuestionaireScoresTable_ToStudentsTable" FromRole="StudentQuestionaireScore" ToRole="Student" />
+        </EntityType>
+        <Association Name="FK_1_StudentQuestionaireScoresTable_ToQuestionairesTable">
+          <End Role="Questionaire" Type="Self.Questionaire" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="StudentQuestionaireScore" Type="Self.StudentQuestionaireScore" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Questionaire">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="StudentQuestionaireScore">
+              <PropertyRef Name="QuestionaireId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_2_StudentQuestionaireScoresTable_ToStudentsTable">
+          <End Role="Student" Type="Self.Student" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="StudentQuestionaireScore" Type="Self.StudentQuestionaireScore" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Student">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="StudentQuestionaireScore">
+              <PropertyRef Name="StudentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="QuestionairesDataEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Questionaire" EntityType="Self.Questionaire" />
+          <EntitySet Name="Student" EntityType="Self.Student" />
+          <EntitySet Name="StudentQuestionaireScore" EntityType="Self.StudentQuestionaireScore" />
+          <AssociationSet Name="FK_1_StudentQuestionaireScoresTable_ToQuestionairesTable" Association="Self.FK_1_StudentQuestionaireScoresTable_ToQuestionairesTable">
+            <End Role="Questionaire" EntitySet="Questionaire" />
+            <End Role="StudentQuestionaireScore" EntitySet="StudentQuestionaireScore" />
+          </AssociationSet>
+          <AssociationSet Name="FK_2_StudentQuestionaireScoresTable_ToStudentsTable" Association="Self.FK_2_StudentQuestionaireScoresTable_ToStudentsTable">
+            <End Role="Student" EntitySet="Student" />
+            <End Role="StudentQuestionaireScore" EntitySet="StudentQuestionaireScore" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="QuestionairesDataModelStoreContainer" CdmEntityContainer="QuestionairesDataEntities">
+          <EntitySetMapping Name="Questionaire">
+            <EntityTypeMapping TypeName="QuestionairesDataModel.Questionaire">
+              <MappingFragment StoreEntitySet="Questionaire">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Codename" ColumnName="Codename" />
+                <ScalarProperty Name="Comments" ColumnName="Comments" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Student">
+            <EntityTypeMapping TypeName="QuestionairesDataModel.Student">
+              <MappingFragment StoreEntitySet="Student">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="Asma" ColumnName="Asma" />
+                <ScalarProperty Name="Seira" ColumnName="Seira" />
+                <ScalarProperty Name="Tmhma" ColumnName="Tmhma" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="StudentQuestionaireScore">
+            <EntityTypeMapping TypeName="QuestionairesDataModel.StudentQuestionaireScore">
+              <MappingFragment StoreEntitySet="StudentQuestionaireScore">
+                <ScalarProperty Name="QuestionaireId" ColumnName="QuestionaireId" />
+                <ScalarProperty Name="StudentId" ColumnName="StudentId" />
+                <ScalarProperty Name="IsReExamination" ColumnName="IsReExamination" />
+                <ScalarProperty Name="ClosedBookScore" ColumnName="ClosedBookScore" />
+                <ScalarProperty Name="OpenBookScore" ColumnName="OpenBookScore" />
+                <ScalarProperty Name="LimitsScore" ColumnName="LimitsScore" />
+                <ScalarProperty Name="BoldfaceScore" ColumnName="BoldfaceScore" />
+                <ScalarProperty Name="DateOfScoring" ColumnName="DateOfScoring" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
